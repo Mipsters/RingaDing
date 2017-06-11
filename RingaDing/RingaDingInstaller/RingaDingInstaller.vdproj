@@ -151,7 +151,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_22833F3294094A449144318067912B86"
             {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\Icon.ico"
+            "SourcePath" = "8:..\\RingaDing\\Resources\\Icon.ico"
             "TargetName" = "8:Icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_418E3F72754248B8A40E01FCF59C5140"

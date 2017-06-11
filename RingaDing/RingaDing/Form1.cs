@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using System.Threading;
+using System.Diagnostics;
+using System.Linq;
 
 using Microsoft.Win32;
 
@@ -31,7 +33,10 @@ namespace RingaDing
             
             while (DateTime.Now.Millisecond != 99)
                 Thread.Sleep(1);
+
             SecTimer.Start();
+
+            music = new List<string>();
 
             Day.Text = DateTime.Now.DayOfWeek.ToString();
 
@@ -41,17 +46,16 @@ namespace RingaDing
             notifyIcon = new NotifyIcon()
             {
                 Icon = Properties.Resources.Icon,
+                Visible = true,
                 ContextMenu = new ContextMenu(new MenuItem[] {
-                new MenuItem("Open App", Open),
-                new MenuItem("Exit", Exit)
-            }),
-                Visible = true
+                    new MenuItem("Open App", Open),
+                    new MenuItem("Exit", Exit)
+                })
             };
 
             notifyIcon.Click += Open;
 
-            waveOutDevice = new WaveOut();
-            waveOutDevice.DeviceNumber = -1;
+            waveOutDevice = new WaveOut(){ DeviceNumber = -1 };
 
             timeLable.Text = (DateTime.Now.Hour < 10 ? "0" : "") + DateTime.Now.Hour + ":" +
                 (DateTime.Now.Minute < 10 ? "0" : "") + DateTime.Now.Minute + ":" +
@@ -74,24 +78,22 @@ namespace RingaDing
             if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing")))
                 Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing"));
 
-            disableByDay();
+            DisableByDay();
 
             if (File.Exists(finalDir + "Settings.txt"))
             {
                 string[] settings = File.ReadAllLines(finalDir + "Settings.txt");
                 directory = settings[0];
                 waveOutDevice.DeviceNumber = int.Parse(settings[1]);
-                runOnStartupToolStripMenuItem1.Checked = bool.Parse(settings[2]);
-                openAppOnStartUpToolStripMenuItem.Checked = bool.Parse(settings[3]);
+                runOnStartupToolStripMenuItem.Checked = bool.Parse(settings[2]);
+                ViewWindowOnStartup.Checked = bool.Parse(settings[3]);
 
-                if (runOnStartupToolStripMenuItem1.Checked &&
-                    !openAppOnStartUpToolStripMenuItem.Checked)
-                    closeOnStart = true;
+                closeOnStart = !ViewWindowOnStartup.Checked;
             }
             
             string path = finalDir + DateTime.Now.DayOfWeek + ".txt";
 
-            init();
+            Init();
 
             if (File.Exists(path))
             {
@@ -121,8 +123,8 @@ namespace RingaDing
                 new string[] {
                     directory,
                     waveOutDevice.DeviceNumber.ToString(),
-                    runOnStartupToolStripMenuItem1.Checked.ToString(),
-                    openAppOnStartUpToolStripMenuItem.Checked.ToString()
+                    runOnStartupToolStripMenuItem.Checked.ToString(),
+                    ViewWindowOnStartup.Checked.ToString()
                 });
 
             for (int i = 0; i < data.Count; i++)
@@ -158,6 +160,14 @@ namespace RingaDing
 
         private void PlayPause_Click(object sender, EventArgs e)
         {
+            int loc = SongComboBox.SelectedIndex;
+            int len = SongComboBox.Items.Count;
+
+            ResetMusic();
+
+            if (len == SongComboBox.Items.Count)
+                SongComboBox.SelectedIndex = loc;
+
             if (SongComboBox.SelectedIndex != -1)
             {
                 if (audioFileReader == null)
@@ -194,10 +204,9 @@ namespace RingaDing
             if (directory != null)
             {
                 DialogResult confirm =
-                    MessageBox.Show("Are You sure you want to Change Directory?\n" +
+                   MessageBox.Show("Are You sure you want to Change Directory?\n" +
                     "Changing directory would mean the deletion of all previous setups",
-                                         "Confirm Directory Change",
-                                         MessageBoxButtons.YesNo);
+                    "Confirm Directory Change", MessageBoxButtons.YesNo);
                 if (confirm == DialogResult.Yes)
                     foreach (DayOfWeek day in new DayOfWeek[] {
                         DayOfWeek.Sunday,
@@ -209,8 +218,7 @@ namespace RingaDing
                         DayOfWeek.Saturday,
                     })
                         File.Delete(finalDir + day + ".txt");
-                if (confirm == DialogResult.No)
-                    return;
+                else return;
             }
 
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
@@ -219,28 +227,21 @@ namespace RingaDing
             {
                 editSpecificDayToolStripMenuItem.Enabled = true;
                 directory = folderBrowserDialog.SelectedPath;
-                init();
+                Init();
             }
             else if(directory == null)
                 MessageBox.Show("ERROR - problem loading folder");
         }
 
-        private void init()
+        private void Init()
         {
             toolStripStatusFile.Text = directory;
 
             if (directory != null && directory != "")
             {
-                music = new List<string>();
-                music.AddRange(Directory.GetFiles(directory, "*.mp3"));
-
-                SongComboBox.Items.Clear();
-
-                for (int i = 0; i < music.Count; i++)
-                {
-                    music[i] = music[i].Replace(directory + '\\', "");
-                    SongComboBox.Items.Add(music[i]);
-                }
+                SongListBox.Items.Clear();
+                data.Clear();
+                ResetMusic();
             }
             else
                 editSpecificDayToolStripMenuItem.Enabled = false;
@@ -249,15 +250,22 @@ namespace RingaDing
         private void SongListBox_DoubleClick(object sender, EventArgs e)
         {
             if (SongListBox.SelectedIndex > -1)
+            {
+                ResetMusic();
                 new EditBox(SongListBox.SelectedIndex, music, data, SongListBox.Items, DateTime.Now.DayOfWeek).Show();
+            }
         }
 
-        private void addItemToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (music != null)
+            {
+                ResetMusic();
+
                 new EditBox(music, data, SongListBox.Items).ShowDialog();
+            }
             else
-                MessageBox.Show("Please Choose A Folder First");
+                MessageBox.Show("Please choose a folder first");
         }
 
         private void SecTimer_Tick(object sender, EventArgs e)
@@ -268,7 +276,7 @@ namespace RingaDing
 
             if(DateTime.Now.DayOfWeek.ToString() != Day.Text)
             {
-                disableByDay();
+                DisableByDay();
 
                 Day.Text = DateTime.Now.DayOfWeek.ToString();
                 string path = finalDir + DateTime.Now.DayOfWeek + ".txt";
@@ -299,7 +307,7 @@ namespace RingaDing
                     }
                     catch
                     {
-                        MessageBox.Show("there was a problem reading the mp3 file");
+                        MessageBox.Show("There was a problem reading the mp3 file");
                         return;
                     }
                     waveOutDevice.Init(audioFileReader);
@@ -307,72 +315,98 @@ namespace RingaDing
                 }
         }
 
-        private void changeSoundCardToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeSoundCardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new SoundCardForm().Show();
         }
         
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new AboutBox().Show();
         }
 
-        private void runOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RunOnStartupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            RegistryKey regKey = Registry.CurrentUser.OpenSubKey
-                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             
-            runOnStartupToolStripMenuItem1.Checked = !runOnStartupToolStripMenuItem1.Checked;
+            runOnStartupToolStripMenuItem.Checked = !runOnStartupToolStripMenuItem.Checked;
 
-            if (runOnStartupToolStripMenuItem1.Checked)
+            if (runOnStartupToolStripMenuItem.Checked)
                 regKey.SetValue("RingaDing", Application.ExecutablePath);
             else
                 regKey.DeleteValue("RingaDing");
         }
 
-        private void openAppOnStartUpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ViewWindowOnStartup_Click(object sender, EventArgs e)
         {
-            openAppOnStartUpToolStripMenuItem.Checked = !openAppOnStartUpToolStripMenuItem.Checked;
+            ViewWindowOnStartup.Checked = !ViewWindowOnStartup.Checked;
+        }
+        
+        private void InfoStatusStrip_DoubleClick(object sender, EventArgs e)
+        {
+            if (directory != null && directory != "")
+                Process.Start(directory);
+        }
+        
+        private void SongComboBox_Click(object sender, EventArgs e)
+        {
+            ResetMusic();
+        }
+
+        private void ResetMusic()
+        {
+            if (directory != null && directory != "")
+            {
+                SongComboBox.Items.Clear();
+                music.Clear();
+                foreach (string type in new String[] { "mp3", "wav", "wma", "wmv", "wma", "flac", "alac", "aac" })
+                    music.AddRange(Directory.EnumerateFiles(directory, "*." + type));
+
+                for (int i = 0; i < music.Count; i++)
+                {
+                    music[i] = music[i].Replace(directory + '\\', "");
+                    SongComboBox.Items.Add(music[i]);
+                }
+            }
         }
 
         #region dayClick
-
-        private void sundayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SundayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Sunday, music).Show();
         }
 
-        private void mondayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MondayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Monday, music).Show();
         }
 
-        private void tusedayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TusedayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Tuesday, music).Show();
         }
 
-        private void wednesdayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void WednesdayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Wednesday, music).Show();
         }
 
-        private void thursdayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ThursdayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Thursday, music).Show();
         }
 
-        private void fridayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FridayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Friday, music).Show();
         }
 
-        private void saturdayToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaturdayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new EditDayForm(DayOfWeek.Saturday, music).Show();
         }
 
-        private void disableByDay()
+        private void DisableByDay()
         {
             sundayToolStripMenuItem.Enabled = true;
             mondayToolStripMenuItem.Enabled = true;
@@ -407,7 +441,6 @@ namespace RingaDing
                     break;
             }
         }
-
         #endregion
     }
 }

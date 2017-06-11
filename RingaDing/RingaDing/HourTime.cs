@@ -200,4 +200,9 @@ public class HourTime
                (Minute < 10 ? "0" : "") + Minute.ToString() + ':' +
                (Second < 10 ? "0" : "") + Second.ToString();
     }
+
+    public override int GetHashCode()
+    {
+        return getTotalSeconds();
+    }
 }

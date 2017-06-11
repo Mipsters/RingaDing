@@ -36,8 +36,8 @@
             this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSoundCardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sturtupOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runOnStartupToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.openAppOnStartUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewWindowOnStartup = new System.Windows.Forms.ToolStripMenuItem();
             this.editSpecificDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sundayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mondayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,39 +94,39 @@
             this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
             this.addItemToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.addItemToolStripMenuItem.Text = "Add Song Time";
-            this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
+            this.addItemToolStripMenuItem.Click += new System.EventHandler(this.AddItemToolStripMenuItem_Click);
             // 
             // changeSoundCardToolStripMenuItem
             // 
             this.changeSoundCardToolStripMenuItem.Name = "changeSoundCardToolStripMenuItem";
             this.changeSoundCardToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.changeSoundCardToolStripMenuItem.Text = "Set Sound Output Device";
-            this.changeSoundCardToolStripMenuItem.Click += new System.EventHandler(this.changeSoundCardToolStripMenuItem_Click);
+            this.changeSoundCardToolStripMenuItem.Click += new System.EventHandler(this.ChangeSoundCardToolStripMenuItem_Click);
             // 
             // sturtupOptionsToolStripMenuItem
             // 
             this.sturtupOptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.runOnStartupToolStripMenuItem1,
-            this.openAppOnStartUpToolStripMenuItem});
+            this.runOnStartupToolStripMenuItem,
+            this.ViewWindowOnStartup});
             this.sturtupOptionsToolStripMenuItem.Name = "sturtupOptionsToolStripMenuItem";
             this.sturtupOptionsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.sturtupOptionsToolStripMenuItem.Text = "Startup Options";
             // 
-            // runOnStartupToolStripMenuItem1
+            // runOnStartupToolStripMenuItem
             // 
-            this.runOnStartupToolStripMenuItem1.Name = "runOnStartupToolStripMenuItem1";
-            this.runOnStartupToolStripMenuItem1.Size = new System.Drawing.Size(205, 22);
-            this.runOnStartupToolStripMenuItem1.Text = "Run on windows startup";
-            this.runOnStartupToolStripMenuItem1.Click += new System.EventHandler(this.runOnStartupToolStripMenuItem_Click);
+            this.runOnStartupToolStripMenuItem.Name = "runOnStartupToolStripMenuItem";
+            this.runOnStartupToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.runOnStartupToolStripMenuItem.Text = "Run on Boot";
+            this.runOnStartupToolStripMenuItem.Click += new System.EventHandler(this.RunOnStartupToolStripMenuItem_Click);
             // 
             // openAppOnStartUpToolStripMenuItem
             // 
-            this.openAppOnStartUpToolStripMenuItem.Checked = true;
-            this.openAppOnStartUpToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.openAppOnStartUpToolStripMenuItem.Name = "openAppOnStartUpToolStripMenuItem";
-            this.openAppOnStartUpToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.openAppOnStartUpToolStripMenuItem.Text = "Open window on startup";
-            this.openAppOnStartUpToolStripMenuItem.Click += new System.EventHandler(this.openAppOnStartUpToolStripMenuItem_Click);
+            this.ViewWindowOnStartup.Checked = true;
+            this.ViewWindowOnStartup.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ViewWindowOnStartup.Name = "openAppOnStartUpToolStripMenuItem";
+            this.ViewWindowOnStartup.Size = new System.Drawing.Size(204, 22);
+            this.ViewWindowOnStartup.Text = "View Window on Startup";
+            this.ViewWindowOnStartup.Click += new System.EventHandler(this.ViewWindowOnStartup_Click);
             // 
             // editSpecificDayToolStripMenuItem
             // 
@@ -145,58 +145,58 @@
             // sundayToolStripMenuItem
             // 
             this.sundayToolStripMenuItem.Name = "sundayToolStripMenuItem";
-            this.sundayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.sundayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.sundayToolStripMenuItem.Text = "Sunday";
-            this.sundayToolStripMenuItem.Click += new System.EventHandler(this.sundayToolStripMenuItem_Click);
+            this.sundayToolStripMenuItem.Click += new System.EventHandler(this.SundayToolStripMenuItem_Click);
             // 
             // mondayToolStripMenuItem
             // 
             this.mondayToolStripMenuItem.Name = "mondayToolStripMenuItem";
-            this.mondayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.mondayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.mondayToolStripMenuItem.Text = "Monday";
-            this.mondayToolStripMenuItem.Click += new System.EventHandler(this.mondayToolStripMenuItem_Click);
+            this.mondayToolStripMenuItem.Click += new System.EventHandler(this.MondayToolStripMenuItem_Click);
             // 
             // tusedayToolStripMenuItem
             // 
             this.tusedayToolStripMenuItem.Name = "tusedayToolStripMenuItem";
-            this.tusedayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.tusedayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tusedayToolStripMenuItem.Text = "Tuesday";
-            this.tusedayToolStripMenuItem.Click += new System.EventHandler(this.tusedayToolStripMenuItem_Click);
+            this.tusedayToolStripMenuItem.Click += new System.EventHandler(this.TusedayToolStripMenuItem_Click);
             // 
             // wednesdayToolStripMenuItem
             // 
             this.wednesdayToolStripMenuItem.Name = "wednesdayToolStripMenuItem";
-            this.wednesdayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.wednesdayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.wednesdayToolStripMenuItem.Text = "Wednesday";
-            this.wednesdayToolStripMenuItem.Click += new System.EventHandler(this.wednesdayToolStripMenuItem_Click);
+            this.wednesdayToolStripMenuItem.Click += new System.EventHandler(this.WednesdayToolStripMenuItem_Click);
             // 
             // thursdayToolStripMenuItem
             // 
             this.thursdayToolStripMenuItem.Name = "thursdayToolStripMenuItem";
-            this.thursdayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.thursdayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.thursdayToolStripMenuItem.Text = "Thursday";
-            this.thursdayToolStripMenuItem.Click += new System.EventHandler(this.thursdayToolStripMenuItem_Click);
+            this.thursdayToolStripMenuItem.Click += new System.EventHandler(this.ThursdayToolStripMenuItem_Click);
             // 
             // fridayToolStripMenuItem
             // 
             this.fridayToolStripMenuItem.Name = "fridayToolStripMenuItem";
-            this.fridayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.fridayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.fridayToolStripMenuItem.Text = "Friday";
-            this.fridayToolStripMenuItem.Click += new System.EventHandler(this.fridayToolStripMenuItem_Click);
+            this.fridayToolStripMenuItem.Click += new System.EventHandler(this.FridayToolStripMenuItem_Click);
             // 
             // saturdayToolStripMenuItem
             // 
             this.saturdayToolStripMenuItem.Name = "saturdayToolStripMenuItem";
-            this.saturdayToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.saturdayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saturdayToolStripMenuItem.Text = "Saturday";
-            this.saturdayToolStripMenuItem.Click += new System.EventHandler(this.saturdayToolStripMenuItem_Click);
+            this.saturdayToolStripMenuItem.Click += new System.EventHandler(this.SaturdayToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
             // SongComboBox
             // 
@@ -206,6 +206,7 @@
             this.SongComboBox.Name = "SongComboBox";
             this.SongComboBox.Size = new System.Drawing.Size(209, 21);
             this.SongComboBox.TabIndex = 2;
+            this.SongComboBox.Click += new System.EventHandler(this.SongComboBox_Click);
             // 
             // SongListBox
             // 
@@ -226,6 +227,7 @@
             this.InfoStatusStrip.Size = new System.Drawing.Size(284, 22);
             this.InfoStatusStrip.TabIndex = 4;
             this.InfoStatusStrip.Text = "statusStrip1";
+            this.InfoStatusStrip.DoubleClick += new System.EventHandler(this.InfoStatusStrip_DoubleClick);
             // 
             // toolStripStatusFile
             // 
@@ -326,8 +328,8 @@
         private System.Windows.Forms.ToolStripMenuItem saturdayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sturtupOptionsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem runOnStartupToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem openAppOnStartUpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runOnStartupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ViewWindowOnStartup;
         private System.Windows.Forms.Label timeLable;
     }
 }
