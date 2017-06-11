@@ -35,7 +35,9 @@
             this.FolderDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSoundCardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.runOnStartupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sturtupOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runOnStartupToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openAppOnStartUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editSpecificDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sundayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mondayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +54,7 @@
             this.PlayPause = new System.Windows.Forms.Button();
             this.SecTimer = new System.Windows.Forms.Timer(this.components);
             this.Day = new System.Windows.Forms.Label();
+            this.timeLable = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.InfoStatusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -74,7 +77,7 @@
             this.FolderDirectoryToolStripMenuItem,
             this.addItemToolStripMenuItem,
             this.changeSoundCardToolStripMenuItem,
-            this.runOnStartupToolStripMenuItem});
+            this.sturtupOptionsToolStripMenuItem});
             this.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem";
             this.SettingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.SettingsToolStripMenuItem.Text = "Options";
@@ -82,30 +85,48 @@
             // FolderDirectoryToolStripMenuItem
             // 
             this.FolderDirectoryToolStripMenuItem.Name = "FolderDirectoryToolStripMenuItem";
-            this.FolderDirectoryToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.FolderDirectoryToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.FolderDirectoryToolStripMenuItem.Text = "Select Music Folder";
             this.FolderDirectoryToolStripMenuItem.Click += new System.EventHandler(this.FolderDirectoryToolStripMenuItem_Click);
             // 
             // addItemToolStripMenuItem
             // 
             this.addItemToolStripMenuItem.Name = "addItemToolStripMenuItem";
-            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.addItemToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.addItemToolStripMenuItem.Text = "Add Song Time";
             this.addItemToolStripMenuItem.Click += new System.EventHandler(this.addItemToolStripMenuItem_Click);
             // 
             // changeSoundCardToolStripMenuItem
             // 
             this.changeSoundCardToolStripMenuItem.Name = "changeSoundCardToolStripMenuItem";
-            this.changeSoundCardToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.changeSoundCardToolStripMenuItem.Text = "Change Sound Output Device";
+            this.changeSoundCardToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.changeSoundCardToolStripMenuItem.Text = "Set Sound Output Device";
             this.changeSoundCardToolStripMenuItem.Click += new System.EventHandler(this.changeSoundCardToolStripMenuItem_Click);
             // 
-            // runOnStartupToolStripMenuItem
+            // sturtupOptionsToolStripMenuItem
             // 
-            this.runOnStartupToolStripMenuItem.Name = "runOnStartupToolStripMenuItem";
-            this.runOnStartupToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.runOnStartupToolStripMenuItem.Text = "Run on startup";
-            this.runOnStartupToolStripMenuItem.Click += new System.EventHandler(this.runOnStartupToolStripMenuItem_Click);
+            this.sturtupOptionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runOnStartupToolStripMenuItem1,
+            this.openAppOnStartUpToolStripMenuItem});
+            this.sturtupOptionsToolStripMenuItem.Name = "sturtupOptionsToolStripMenuItem";
+            this.sturtupOptionsToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.sturtupOptionsToolStripMenuItem.Text = "Startup Options";
+            // 
+            // runOnStartupToolStripMenuItem1
+            // 
+            this.runOnStartupToolStripMenuItem1.Name = "runOnStartupToolStripMenuItem1";
+            this.runOnStartupToolStripMenuItem1.Size = new System.Drawing.Size(205, 22);
+            this.runOnStartupToolStripMenuItem1.Text = "Run on windows startup";
+            this.runOnStartupToolStripMenuItem1.Click += new System.EventHandler(this.runOnStartupToolStripMenuItem_Click);
+            // 
+            // openAppOnStartUpToolStripMenuItem
+            // 
+            this.openAppOnStartUpToolStripMenuItem.Checked = true;
+            this.openAppOnStartUpToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.openAppOnStartUpToolStripMenuItem.Name = "openAppOnStartUpToolStripMenuItem";
+            this.openAppOnStartUpToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.openAppOnStartUpToolStripMenuItem.Text = "Open window on startup";
+            this.openAppOnStartUpToolStripMenuItem.Click += new System.EventHandler(this.openAppOnStartUpToolStripMenuItem_Click);
             // 
             // editSpecificDayToolStripMenuItem
             // 
@@ -240,12 +261,22 @@
             this.Day.TabIndex = 5;
             this.Day.Text = "Day of week";
             // 
+            // timeLable
+            // 
+            this.timeLable.AutoSize = true;
+            this.timeLable.Location = new System.Drawing.Point(223, 63);
+            this.timeLable.Name = "timeLable";
+            this.timeLable.Size = new System.Drawing.Size(49, 13);
+            this.timeLable.TabIndex = 5;
+            this.timeLable.Text = "00:00:00";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(284, 294);
+            this.Controls.Add(this.timeLable);
             this.Controls.Add(this.Day);
             this.Controls.Add(this.InfoStatusStrip);
             this.Controls.Add(this.SongListBox);
@@ -261,6 +292,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.InfoStatusStrip.ResumeLayout(false);
@@ -293,7 +325,10 @@
         private System.Windows.Forms.ToolStripMenuItem fridayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saturdayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem runOnStartupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sturtupOptionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runOnStartupToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openAppOnStartUpToolStripMenuItem;
+        private System.Windows.Forms.Label timeLable;
     }
 }
 

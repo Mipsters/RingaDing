@@ -105,6 +105,7 @@
             // 
             // EditBox
             // 
+            this.AcceptButton = this.Confirm;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Cancel;
@@ -121,7 +122,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EditBox";
-            this.Text = "EditBox";
+            this.Text = "Edit Box";
             this.ResumeLayout(false);
             this.PerformLayout();
 

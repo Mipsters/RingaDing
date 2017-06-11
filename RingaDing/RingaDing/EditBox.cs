@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.IO;
 
 namespace RingaDing
 {
@@ -11,6 +12,7 @@ namespace RingaDing
         private int dataLoc;
         private List<string> data;
         private List<Tuple<HourTime, string>> originData;
+        private DayOfWeek dayOfWeek;
 
         public EditBox(List<string> data, List<Tuple<HourTime, string>> originData, ListBox.ObjectCollection originList)
         {
@@ -22,6 +24,7 @@ namespace RingaDing
             this.originList = originList;
             this.originData = originData;
             this.data = data;
+            dayOfWeek = DateTime.Now.DayOfWeek;
             
             foreach (string str in data)
                 SongComboBox.Items.Add(str);
@@ -29,7 +32,7 @@ namespace RingaDing
             Delete.Hide();
         }
 
-        public EditBox(int dataLoc, List<string> data, List<Tuple<HourTime, string>> originData, ListBox.ObjectCollection originList)
+        public EditBox(int dataLoc, List<string> data, List<Tuple<HourTime, string>> originData, ListBox.ObjectCollection originList, DayOfWeek dayOfWeek)
         {
             InitializeComponent();
 
@@ -38,6 +41,7 @@ namespace RingaDing
             this.dataLoc = dataLoc;
             this.originData = originData;
             this.data = data;
+            this.dayOfWeek = dayOfWeek;
 
             this.originList = originList;
 
@@ -70,11 +74,14 @@ namespace RingaDing
             {
                 originList[dataLoc] = TimeData.Text + " - " + SongComboBox.Text;
                 originData[dataLoc] = Tuple.Create(HourTime.Parse(TimeData.Text), data[SongComboBox.SelectedIndex]);
+
+
             } else {
                 originList.Add(TimeData.Text + " - " + SongComboBox.Text);
                 originData.Add(Tuple.Create(HourTime.Parse(TimeData.Text), data[SongComboBox.SelectedIndex]));
             }
 
+            save();
             Close();
         }
 
@@ -87,6 +94,8 @@ namespace RingaDing
             {
                 originData.RemoveAt(dataLoc);
                 originList.RemoveAt(dataLoc);
+
+                save();
                 Close();
             }
         }
@@ -94,6 +103,18 @@ namespace RingaDing
         private void Cancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void save()
+        {
+            string finalDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing") + '\\';
+            string path = finalDir + dayOfWeek + ".txt";
+            string[] temp = new string[originData.Count];
+
+            for (int i = 0; i < originData.Count; i++)
+                temp[i] = originData[i].Item1.ToString() + '|' + originData[i].Item2;
+
+            File.WriteAllLines(path, temp);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 
 using Microsoft.Win32;
 
@@ -16,8 +17,9 @@ namespace RingaDing
         public static string directory;
         private List<string> music;
         private NotifyIcon notifyIcon;
-        private bool closedByIcon;
-        
+        private bool closedByIcon, closeOnStart;
+        private string finalDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing") + '\\';
+                
         public static WaveOut waveOutDevice;
         private AudioFileReader audioFileReader;
 
@@ -26,12 +28,15 @@ namespace RingaDing
             InitializeComponent();
 
             data = new List<Tuple<HourTime, string>>();
-
+            
+            while (DateTime.Now.Millisecond != 99)
+                Thread.Sleep(1);
             SecTimer.Start();
 
             Day.Text = DateTime.Now.DayOfWeek.ToString();
 
             closedByIcon = false;
+            closeOnStart = false;
 
             notifyIcon = new NotifyIcon()
             {
@@ -43,8 +48,14 @@ namespace RingaDing
                 Visible = true
             };
 
+            notifyIcon.Click += Open;
+
             waveOutDevice = new WaveOut();
             waveOutDevice.DeviceNumber = -1;
+
+            timeLable.Text = (DateTime.Now.Hour < 10 ? "0" : "") + DateTime.Now.Hour + ":" +
+                (DateTime.Now.Minute < 10 ? "0" : "") + DateTime.Now.Minute + ":" +
+                (DateTime.Now.Second < 10 ? "0" : "") + DateTime.Now.Second;
         }
 
         private void Open(Object obj, EventArgs evnt)
@@ -60,17 +71,25 @@ namespace RingaDing
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (!Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing")))
+                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing"));
+
             disableByDay();
 
-            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Settings.txt"))
+            if (File.Exists(finalDir + "Settings.txt"))
             {
-                string[] settings = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + "Settings.txt");
+                string[] settings = File.ReadAllLines(finalDir + "Settings.txt");
                 directory = settings[0];
                 waveOutDevice.DeviceNumber = int.Parse(settings[1]);
-                runOnStartupToolStripMenuItem.Checked = bool.Parse(settings[2]);
+                runOnStartupToolStripMenuItem1.Checked = bool.Parse(settings[2]);
+                openAppOnStartUpToolStripMenuItem.Checked = bool.Parse(settings[3]);
+
+                if (runOnStartupToolStripMenuItem1.Checked &&
+                    !openAppOnStartUpToolStripMenuItem.Checked)
+                    closeOnStart = true;
             }
             
-            string path = AppDomain.CurrentDomain.BaseDirectory + DateTime.Now.DayOfWeek + ".txt";
+            string path = finalDir + DateTime.Now.DayOfWeek + ".txt";
 
             init();
 
@@ -87,16 +106,23 @@ namespace RingaDing
             }
         }
 
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            if(closeOnStart)
+                Hide();
+        }
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + DateTime.Now.DayOfWeek + ".txt";
+            string path = finalDir + DateTime.Now.DayOfWeek + ".txt";
             string[] temp = new string[data.Count];
 
-            File.WriteAllLines(AppDomain.CurrentDomain.BaseDirectory + "Settings.txt",
+            File.WriteAllLines(finalDir + "Settings.txt",
                 new string[] {
                     directory,
                     waveOutDevice.DeviceNumber.ToString(),
-                    runOnStartupToolStripMenuItem.Checked.ToString()
+                    runOnStartupToolStripMenuItem1.Checked.ToString(),
+                    openAppOnStartUpToolStripMenuItem.Checked.ToString()
                 });
 
             for (int i = 0; i < data.Count; i++)
@@ -111,7 +137,7 @@ namespace RingaDing
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!closedByIcon)
+            if (!closedByIcon && e.CloseReason != CloseReason.WindowsShutDown)
             {
                 DialogResult confirmResult = MessageBox.Show("Continue in background?",
                                          "Confirm Close",
@@ -182,7 +208,7 @@ namespace RingaDing
                         DayOfWeek.Friday,
                         DayOfWeek.Saturday,
                     })
-                        File.Delete(AppDomain.CurrentDomain.BaseDirectory + day + ".txt");
+                        File.Delete(finalDir + day + ".txt");
                 if (confirm == DialogResult.No)
                     return;
             }
@@ -223,7 +249,7 @@ namespace RingaDing
         private void SongListBox_DoubleClick(object sender, EventArgs e)
         {
             if (SongListBox.SelectedIndex > -1)
-                new EditBox(SongListBox.SelectedIndex, music, data, SongListBox.Items).Show();
+                new EditBox(SongListBox.SelectedIndex, music, data, SongListBox.Items, DateTime.Now.DayOfWeek).Show();
         }
 
         private void addItemToolStripMenuItem_Click(object sender, EventArgs e)
@@ -236,12 +262,16 @@ namespace RingaDing
 
         private void SecTimer_Tick(object sender, EventArgs e)
         {
+            timeLable.Text = (DateTime.Now.Hour < 10 ? "0" : "") + DateTime.Now.Hour + ":" +
+                (DateTime.Now.Minute < 10 ? "0" : "") + DateTime.Now.Minute + ":" +
+                (DateTime.Now.Second < 10 ? "0" : "") + DateTime.Now.Second;
+
             if(DateTime.Now.DayOfWeek.ToString() != Day.Text)
             {
                 disableByDay();
 
                 Day.Text = DateTime.Now.DayOfWeek.ToString();
-                string path = AppDomain.CurrentDomain.BaseDirectory + DateTime.Now.DayOfWeek + ".txt";
+                string path = finalDir + DateTime.Now.DayOfWeek + ".txt";
                 
                 data.Clear();
                 SongListBox.Items.Clear();
@@ -291,13 +321,18 @@ namespace RingaDing
         {
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-            runOnStartupToolStripMenuItem.Checked = !runOnStartupToolStripMenuItem.Checked;
             
-            if (runOnStartupToolStripMenuItem.Checked)
+            runOnStartupToolStripMenuItem1.Checked = !runOnStartupToolStripMenuItem1.Checked;
+
+            if (runOnStartupToolStripMenuItem1.Checked)
                 regKey.SetValue("RingaDing", Application.ExecutablePath);
             else
                 regKey.DeleteValue("RingaDing");
+        }
+
+        private void openAppOnStartUpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openAppOnStartUpToolStripMenuItem.Checked = !openAppOnStartUpToolStripMenuItem.Checked;
         }
 
         #region dayClick
@@ -374,6 +409,5 @@ namespace RingaDing
         }
 
         #endregion
-
     }
 }

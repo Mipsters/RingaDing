@@ -11,6 +11,7 @@ namespace RingaDing
         private DayOfWeek dayOfWeek;
         private List<string> music;
         private List<Tuple<HourTime, string>> data;
+        private string finalDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RingaDing") + '\\';
 
         public EditDayForm(DayOfWeek dayOfWeek, List<string> music)
         {
@@ -24,7 +25,7 @@ namespace RingaDing
 
         private void EditDayForm_Load(object sender, EventArgs e)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + dayOfWeek + ".txt";
+            string path = finalDir + dayOfWeek + ".txt";
             
             if (File.Exists(path))
             {
@@ -41,7 +42,7 @@ namespace RingaDing
 
         private void Save_Click(object sender, EventArgs e)
         {
-            string path = AppDomain.CurrentDomain.BaseDirectory + dayOfWeek + ".txt";
+            string path = finalDir + dayOfWeek + ".txt";
             string[] temp = new string[data.Count];
 
             for (int i = 0; i < data.Count; i++)
@@ -59,12 +60,17 @@ namespace RingaDing
 
         private void SongListBox_DoubleClick(object sender, EventArgs e)
         {
-            new EditBox(SongListBox.SelectedIndex, music, data, SongListBox.Items).Show();
+            new EditBox(SongListBox.SelectedIndex, music, data, SongListBox.Items, dayOfWeek).Show();
         }
 
         private void Add_Click(object sender, EventArgs e)
         {
             new EditBox(music, data, SongListBox.Items).Show();
+        }
+
+        private void CopyDay_Click(object sender, EventArgs e)
+        {
+            new CopyDayForm(dayOfWeek, SongListBox.Items, data).Show();
         }
     }
 }

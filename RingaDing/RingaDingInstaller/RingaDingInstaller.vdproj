@@ -15,20 +15,32 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_16C082698B00185C5C677018209EB903"
+        "OwnerKey" = "8:_26BD372DF7174105B7A39B9E5FB2430E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_22833F3294094A449144318067912B86"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_26BD372DF7174105B7A39B9E5FB2430E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_57A18E58E8494543A44DD876DE39A0A8"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_BCA8E625F295DBC19E16D1E81C9E8C1C"
+        "OwnerKey" = "8:_26BD372DF7174105B7A39B9E5FB2430E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_85BF0DF6302C50C0271A9CC206157AD3"
-        "OwnerKey" = "8:_26BD372DF7174105B7A39B9E5FB2430E"
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_BCA8E625F295DBC19E16D1E81C9E8C1C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,7 +52,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_85BF0DF6302C50C0271A9CC206157AD3"
+        "OwnerKey" = "8:_16C082698B00185C5C677018209EB903"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -61,14 +73,6 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
-            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
-            {
-            "Enabled" = "11:TRUE"
-            "PromptEnabled" = "11:TRUE"
-            "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
-            "ComponentsUrl" = "8:"
-            }
         }
         "Release"
         {
@@ -85,14 +89,6 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
-            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
-            {
-            "Enabled" = "11:TRUE"
-            "PromptEnabled" = "11:TRUE"
-            "PrerequisitesLocation" = "2:1"
-            "Url" = "8:"
-            "ComponentsUrl" = "8:"
-            }
         }
     }
     "Deployable"
@@ -122,9 +118,40 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_57A18E58E8494543A44DD876DE39A0A8"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_16C082698B00185C5C677018209EB903"
             {
-            "SourcePath" = "8:..\\RingaDing\\Resources\\Icon.ico"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_16C082698B00185C5C677018209EB903"
+                    {
+                    "Name" = "8:NAudio.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:NAudio.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_418E3F72754248B8A40E01FCF59C5140"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_22833F3294094A449144318067912B86"
+            {
+            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\Icon.ico"
             "TargetName" = "8:Icon.ico"
             "Tag" = "8:"
             "Folder" = "8:_418E3F72754248B8A40E01FCF59C5140"
@@ -142,20 +169,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_85BF0DF6302C50C0271A9CC206157AD3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BCA8E625F295DBC19E16D1E81C9E8C1C"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_85BF0DF6302C50C0271A9CC206157AD3"
+                    "_BCA8E625F295DBC19E16D1E81C9E8C1C"
                     {
-                    "Name" = "8:NAudio.dll"
+                    "Name" = "8:System.Net.Http.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:NAudio.dll"
+            "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_418E3F72754248B8A40E01FCF59C5140"
@@ -361,7 +388,7 @@
             "Target" = "8:_26BD372DF7174105B7A39B9E5FB2430E"
             "Folder" = "8:_F3F079CEEA6346448D65D9B64EE3EF0A"
             "WorkingFolder" = "8:_418E3F72754248B8A40E01FCF59C5140"
-            "Icon" = "8:_57A18E58E8494543A44DD876DE39A0A8"
+            "Icon" = "8:_22833F3294094A449144318067912B86"
             "Feature" = "8:"
             }
         }
@@ -765,7 +792,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_26BD372DF7174105B7A39B9E5FB2430E"
             {
-            "SourcePath" = "8:..\\RingaDing\\obj\\Debug\\RingaDing.exe"
+            "SourcePath" = "8:..\\RingaDing\\obj\\Release\\RingaDing.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_418E3F72754248B8A40E01FCF59C5140"
